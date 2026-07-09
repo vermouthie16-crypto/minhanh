@@ -164,4 +164,280 @@ section { padding: 4rem 0; scroll-margin-top: 80px; }
   border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-family: var(--font-title); flex-shrink: 0;
 }
 .ex-title { font-family: var(--font-title); font-size: 1.2rem; font-weight: 700; color: var(--ink); }
-.ex-body { font-size: 0.9rem
+.ex-body { font-size: 0.9rem; margin-bottom: 1.5rem; }
+.ex-field { margin-bottom: 0.6rem; }
+.field-title { font-weight: 700; color: var(--accent); font-size: 0.85rem; display: flex; align-items: center; gap: 0.4rem; transition: transform 0.3s; }
+.ex-card:hover .field-title { animation: pulseIcon 1s ease-in-out infinite alternate; }
+@keyframes pulseIcon { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
+.ex-body p { color: var(--muted); margin-top: 0.1rem; }
+.ex-link { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--accent); font-weight: 600; text-decoration: none; margin-top: auto; }
+.ex-link svg { width: 16px; height: 16px; }
+
+/* --- HIỆU ỨNG ĐỘNG CHO KHỐI THÔNG SỐ & HỌC ĐƯỢC --- */
+.learn-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(30%, 1fr)); gap: 1.2rem; }
+.learn-card {
+  background: var(--panel); padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(2,132,199,0.1);
+  display: flex; gap: 1rem; align-items: flex-start; transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.learn-card:hover { transform: scale(1.04); background-color: var(--accent-light); }
+.learn-ic { font-size: 1.5rem; }
+.learn-card p { color: var(--muted); font-size: 0.95rem; }
+
+/* Summary */
+.summary-quote { font-size: 1.4rem; font-family: var(--font-title); font-weight: 600; color: var(--accent); border-left: 4px solid var(--accent); padding-left: 1rem; margin-bottom: 2rem; }
+.reflect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem; }
+.reflect-col h3 { font-family: var(--font-title); font-size: 1.3rem; margin-bottom: 0.8rem; color: var(--ink); }
+.reflect-col p { color: var(--muted); font-size: 0.95rem; margin-bottom: 0.8rem; }
+
+/* Khối thống kê tự động nhấp nhô liên tục */
+.stat-row { display: flex; gap: 2rem; justify-content: center; background: var(--panel); padding: 2rem; border-radius: 20px; border: 1px solid var(--accent-border); }
+.stat { text-align: center; animation: floatStat 4s ease-in-out infinite alternate; }
+.stat:nth-child(2) { animation-delay: 0.5s; }
+.stat:nth-child(3) { animation-delay: 1s; }
+@keyframes floatStat { 0% { transform: translateY(0); } 100% { transform: translateY(-6px); } }
+.stat .num { font-family: var(--font-title); font-size: 2.5rem; font-weight: 800; color: var(--accent); line-height: 1; }
+.stat .label { font-size: 0.85rem; color: var(--muted); font-weight: 600; margin-top: 0.2rem; }
+
+/* Footer */
+footer { text-align: center; padding: 3rem 0; border-top: 1px solid var(--accent-border); margin-top: 4rem; color: var(--muted); font-size: 0.9rem;}
+footer .f-name { font-family: var(--font-title); font-weight: 700; color: var(--ink); font-size: 1.1rem; }
+
+/* Scroll Animation classes */
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  header.top-nav { flex-direction: column; gap: 0.8rem; padding: 1rem; text-align: center; }
+  .nav-links { gap: 0.8rem; }
+  .hero-grid { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
+  .hero-meta { grid-template-columns: 1fr; }
+  .hero-actions { justify-content: center; }
+  .ex-grid { grid-template-columns: 1fr; }
+  .reflect-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .stat-row { flex-direction: column; gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="wash"></canvas>
+<div class="fade-edge"></div>
+<span class="drift-emoji" style="top:15%; left:10%;">✨</span>
+<span class="drift-emoji" style="top:65%; left:8%; animation-delay:2s;">🐳</span>
+<span class="drift-emoji" style="top:22%; left:85%; animation-delay:1s;">☁️</span>
+<span class="drift-emoji" style="top:50%; left:90%; animation-delay:3s;">🌊</span>
+
+<header class="top-nav">
+  <div class="nav-logo">MA</div>
+  <ul class="nav-links">
+    <li><a href="#gioithieu" class="nav-link active" data-target="gioithieu">Giới thiệu</a></li>
+    <li><a href="#baitap" class="nav-link" data-target="baitap">Bài tập</a></li>
+    <li><a href="#hocduoc" class="nav-link" data-target="hocduoc">Học được</a></li>
+    <li><a href="#tongket" class="nav-link" data-target="tongket">Tổng kết</a></li>
+  </ul>
+  <a href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank" rel="noopener" class="nav-drive" title="Google Drive">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+  </a>
+</header>
+
+<main>
+  <section class="hero" id="top">
+    <div class="hero-grid">
+      <div class="hero-inner">
+        <div class="eyebrow">Portfolio môn học · Nhập môn Công nghệ số &amp; Ứng dụng AI</div>
+        <h1 class="name">Nguyễn Minh <span class="accent">Anh</span></h1>
+        <p class="hero-sub">Sinh viên ngành <b>Tiếng Việt và văn hoá Việt Nam</b>, Trường Đại học Ngoại ngữ. Đây là nơi lưu lại hành trình học tập, các bài thực hành và những điều mình đã học được trong quá trình làm quen với công nghệ số và AI.</p>
+        <div class="hero-meta">
+          <div class="meta-item"><div class="k">Mã sinh viên</div><div class="v">25040302</div></div>
+          <div class="meta-item"><div class="k">Ngành học</div><div class="v">Tiếng Việt &amp; VH Việt Nam</div></div>
+          <div class="meta-item"><div class="k">Trường</div><div class="v">Đại học Ngoại ngữ</div></div>
+        </div>
+        <div class="hero-actions">
+          <a href="#baitap" class="btn btn-primary">Xem bài tập →</a>
+          <a href="#tongket" class="btn btn-ghost">Đọc tổng kết</a>
+        </div>
+      </div>
+      <div class="avatar-wrap">
+        <div class="avatar-frame">
+          <div class="avatar-blob">
+            <img class="avatar-img" src="avatar.jpg" alt="Ảnh cá nhân của Nguyễn Minh Anh"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <span class="avatar-fallback" style="display:none;">MA</span>
+          </div>
+          <div class="avatar-sticker s1">🌊</div>
+          <div class="avatar-sticker s2">✨</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gioithieu">
+    <div class="section-head reveal">
+      <div class="tag">Giới thiệu</div>
+      <h2 class="section-title">Một chút về mình</h2>
+    </div>
+    <p class="reveal" style="color:var(--muted); font-size:16px; line-height:1.9; max-width:850px;">
+      Xin chào, mình là <b style="color:var(--ink); font-weight:700;">Nguyễn Minh Anh</b>, hiện đang là sinh viên ngành Tiếng Việt và văn hoá Việt Nam tại Trường Đại học Ngoại ngữ. Portfolio này được xây dựng trong quá trình học môn Nhập môn Công nghệ số và ứng dụng Trí tuệ nhân tạo, ghi lại từng bài thực hành cũng như những trải nghiệm, bài học mình tích lũy được trên hành trình kết hợp tinh hoa ngôn ngữ bản địa cùng thế giới công nghệ số.
+    </p>
+  </section>
+
+  <section id="baitap">
+    <div class="section-head reveal">
+      <div class="tag">Bài tập</div>
+      <h2 class="section-title">Sáu bài thực hành — mục tiêu &amp; kết quả</h2>
+    </div>
+    <div class="ex-grid" id="exGrid"></div>
+  </section>
+
+  <section id="hocduoc">
+    <div class="section-head reveal">
+      <div class="tag">Những điều học được</div>
+      <h2 class="section-title">Điều mình học được khi làm Portfolio</h2>
+    </div>
+    <div class="learn-grid">
+      <div class="learn-card reveal"><div class="learn-ic">🗂️</div><p>Tổ chức và trình bày thông tin một cách khoa học, mạch lạc hơn thay vì rời rạc.</p></div>
+      <div class="learn-card reveal"><div class="learn-ic">🔍</div><p>Tư duy phản biện khi tìm kiếm, chọn lọc và đánh giá độ tin cậy của nguồn thông tin.</p></div>
+      <div class="learn-card reveal"><div class="learn-ic">🤖</div><p>Biết cách đặt câu hỏi và làm việc hiệu quả cùng các công cụ AI trong học tập.</p></div>
+      <div class="learn-card reveal"><div class="learn-ic">🤝</div><p>Kỹ năng phối hợp nhóm và quản lý tiến độ công việc trên nền tảng trực tuyến.</p></div>
+      <div class="learn-card reveal"><div class="learn-ic">🎨</div><p>Cân bằng giữa sự hỗ trợ của AI và dấu ấn sáng tạo của riêng mình.</p></div>
+      <div class="learn-card reveal"><div class="learn-ic">📝</div><p>Kiên trì chỉnh sửa, hoàn thiện từng phần để có một sản phẩm trình bày chuyên nghiệp.</p></div>
+    </div>
+  </section>
+
+  <section id="tongket">
+    <div class="section-head reveal">
+      <div class="tag">Tổng kết</div>
+      <h2 class="section-title">Nhìn lại chặng đường</h2>
+    </div>
+    <p class="summary-quote reveal">Mỗi bài tập nhỏ đều là một bước tiến, giúp mình <em>tự tin hơn</em> trên hành trình làm quen với công nghệ số và AI.</p>
+    <div class="reflect-grid">
+      <div class="reflect-col reveal">
+        <h3>📚 Bài học nhận được</h3>
+        <p>Hoàn thành portfolio này là một trải nghiệm đáng nhớ đối với mình. Qua từng bài tập, mình học được cách tổ chức thông tin khoa học hơn, biết đánh giá độ tin cậy của nguồn tin và đặt câu hỏi rõ ràng khi làm việc cùng AI.</p>
+        <p>Đây cũng là dịp để mình rèn luyện sự kiên trì, cẩn thận và khả năng trình bày nội dung một cách mạch lạc, chuyên nghiệp hơn.</p>
+      </div>
+      <div class="reflect-col reveal">
+        <h3>🌱 Quá trình trưởng thành</h3>
+        <p>Nhìn lại từng bài tập đã thực hiện, mình nhận ra bản thân đã tiến bộ rất nhiều — từ những thao tác cơ bản cho đến việc biết ứng dụng AI một cách có trách nhiệm vào học tập và nghiên cứu.</p>
+        <p>Mình hy vọng portfolio này sẽ là một dấu mốc đáng yêu, ghi lại sự cố gắng trong học kỳ này, đồng thời là động lực để mình tiếp tục học hỏi và phát triển nhiều hơn nữa.</p>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat reveal"><div class="num">06/06</div><div class="label">Bài hoàn thành</div></div>
+      <div class="stat reveal"><div class="num">100%</div><div class="label">Cố gắng</div></div>
+      <div class="stat reveal"><div class="num">A+</div><div class="label">Mục tiêu môn học</div></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f-name">Nguyễn Minh Anh</div>
+    <p>Portfolio môn học Nhập môn Công nghệ số &amp; Ứng dụng AI · 2026</p>
+  </footer>
+</main>
+
+<script>
+// Xử lý Active Menu và Scroll Mượt
+const navLinks = document.querySelectorAll('.nav-links a');
+const sections = ['gioithieu','baitap','hocduoc','tongket'].map(id => document.getElementById(id));
+
+function setActive(){
+  let current = sections[0];
+  sections.forEach(s => { if(window.scrollY + 160 >= s.offsetTop) current = s; });
+  navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#'+current.id));
+}
+window.addEventListener('scroll', setActive);
+
+navLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const href = link.getAttribute('href');
+    const target = document.getElementById(href.slice(1));
+    window.scrollTo({top: target.offsetTop - 80, behavior:'smooth'});
+  });
+});
+
+// Hiệu ứng Fade-in xuất hiện khi cuộn trang
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// Mảng dữ liệu 6 bài tập
+const exercises = [
+  {t:"Thao tác cơ bản với tệp tin và thư mục", goal:"Xây dựng thói quen tổ chức dữ liệu cá nhân khoa học, dễ tìm kiếm và sao lưu an toàn.", result:"Thiết lập hệ thống thư mục rõ ràng theo môn học/dự án, đặt tên tệp nhất quán và sao lưu định kỳ.", link:"#"},
+  {t:"Tìm kiếm và đánh giá thông tin học thuật", goal:"Biết khai thác các nguồn học thuật uy tín và đánh giá độ tin cậy của thông tin trước khi sử dụng.", result:"Thành thạo tra cứu trên cơ sở dữ liệu học thuật và áp dụng tiêu chí đánh giá nguồn vào bài tập thực tế.", link:"#"},
+  {t:"Viết Prompt hiệu quả cho các tác vụ học tập", goal:"Rèn luyện kỹ năng đặt câu hỏi rõ ràng, có ngữ cảnh để khai thác AI phục vụ học tập.", result:"Xây dựng được bộ prompt mẫu cho nhiều tình huống học tập, cải thiện rõ rệt chất lượng phản hồi từ AI.", link:"#"},
+  {t:"Sử dụng công cụ hợp tác trực tuyến cho dự án nhóm", goal:"Phối hợp hiệu quả với nhóm qua các nền tảng trực tuyến, quản lý tiến độ minh bạch.", result:"Áp dụng thành công công cụ cộng tác để phân chia công việc, theo dõi deadline và lưu trữ tài liệu nhóm.", link:"#"},
+  {t:"Sử dụng AI tạo sinh để hỗ trợ sáng tạo nội dung", goal:"Kết hợp AI tạo sinh vào quy trình sáng tạo mà vẫn giữ được dấu ấn cá nhân.", result:"Tạo ra sản phẩm nội dung hoàn chỉnh có hỗ trợ của AI, đồng thời tinh chỉnh phù hợp phong cách riêng.", link:"#"},
+  {t:"Sử dụng AI có trách nhiệm trong học tập và nghiên cứu", goal:"Nhận diện giới hạn của AI và sử dụng công cụ này một cách liêm chính trong học thuật.", result:"Hình thành thói quen kiểm chứng thông tin do AI cung cấp và trích dẫn nguồn hỗ trợ một cách minh bạch.", link:"#"},
+];
+
+const grid = document.getElementById('exGrid');
+exercises.forEach((ex, i) => {
+  const card = document.createElement('div');
+  card.className = 'ex-card reveal';
+  card.innerHTML = `
+    <div>
+      <div class="ex-top">
+        <div class="ex-num">${String(i+1).padStart(2,'0')}</div>
+        <div class="ex-title">${ex.t}</div>
+      </div>
+      <div class="ex-body">
+        <div class="ex-field">
+          <div class="field-title">🎯 Mục tiêu</div>
+          <p>${ex.goal}</p>
+        </div>
+        <div class="ex-field">
+          <div class="field-title">✅ Kết quả đạt được</div>
+          <p>${ex.result}</p>
+        </div>
+      </div>
+    </div>
+    <a href="${ex.link}" target="_blank" rel="noopener" class="ex-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Xem trên Google Drive
+    </a>`;
+  grid.appendChild(card);
+  io.observe(card);
+});
+
+// Canvas nền hòa trộn xanh pastel
+const canvas = document.getElementById('wash');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+
+let mouse = {x:-9999, y:-9999};
+window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+const washColors = ['186,230,253', '224,242,254', '191,219,254', '219,234,254'];
+const blobs = Array.from({length:6}, (_,i) => ({
+  ox: Math.random()*W, oy: Math.random()*H,
+  rad: Math.random()*180 + 220, ang: Math.random()*Math.PI*2,
+  speed: Math.random()*0.0005 + 0.0002, orbit: Math.random()*140 + 80,
+  color: washColors[i % washColors.length]
+}));
+
+function tick(){
+  ctx.clearRect(0,0,W,H);
+  blobs.forEach(b => {
+    b.ang += b.speed;
+    const bx = b.ox + Math.cos(b.ang)*b.orbit;
+    const by = b.oy + Math.sin(b.ang*1.1)*b.orbit;
+    const mx = bx + (mouse.x-bx)*0.01;
+    const my = by + (mouse.y-by)*0.01;
+    const grad = ctx.createRadialGradient(mx,my,0,mx,my,b.rad);
+    grad.addColorStop(0, `rgba(${b.color},0.4)`);
+    grad.addColorStop(0.5, `rgba(${b.color},0.15)`);
+    grad.addColorStop(1, `rgba(${b.color},0)`);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0,0,W,H);
+  });
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
