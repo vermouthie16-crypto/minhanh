@@ -110,46 +110,49 @@ header.top-nav {
 }
 
 /* --- KHUNG ẢNH ĐẠI DIỆN HÌNH VUÔNG HIỆU ỨNG BAY BAY LƠ LỬNG --- */
+/* --- KHUNG ẢNH ĐẠI DIỆN HÌNH VUÔNG BAY NHANH VÀ SMOOTH HƠN --- */
 .avatar-frame { 
   position: relative; 
   width: 280px; 
   height: 280px; 
   
-  /* Thêm hiệu ứng bay lơ lửng liên tục (floatAvatar) */
-  animation: floatAvatar 6s ease-in-out infinite alternate;
-  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s ease;
+  /* Đã tăng tốc xuống 2.5s và dùng cubic-bezier giúp chuyển động mượt mà, nảy nhẹ cực smooth */
+  animation: floatAvatarFast 2.5s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite alternate;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Khi di chuột vào: Ảnh vừa bay vừa xoay nhẹ và phóng to một chút */
+/* Khi di chuột vào: Ảnh xoay nhẹ và giữ nguyên trạng thái bồng bềnh */
 .avatar-frame:hover { 
   transform: scale(1.05) rotate(3deg); 
 }
-@keyframes floatAvatar {
-  0% {
-    transform: translateY(0px);
-    box-shadow: 0 12px 24px rgba(2, 132, 199, 0.15);
+
+/* Định nghĩa quỹ đạo bay nhanh và siêu mượt */
+@keyframes floatAvatarFast {
+  0% { 
+    transform: translateY(0px); 
+    filter: drop-shadow(0 8px 15px rgba(2, 132, 199, 0.15)); 
   }
-  100% {
-    transform: translateY(-15px); /* Bay lên 15px */
-    box-shadow: 0 25px 35px rgba(2, 132, 199, 0.25); /* Đổ bóng sâu hơn khi bay cao */
+  100% { 
+    transform: translateY(-25px); /* Tăng độ cao bay lên một chút (25px) để thấy rõ nhịp điệu */
+    filter: drop-shadow(0 25px 25px rgba(2, 132, 199, 0.25)); 
   }
 }
-  
+
+/* Các phần viền và ảnh bên trong giữ nguyên để đảm bảo khung vuông hiện đại */
 .avatar-blob {
   width: 100%; height: 100%; background: var(--panel); border-radius: 24px;
   overflow: hidden; display: flex; align-items: center; justify-content: center;
   border: 4px solid var(--accent-border); position: relative; z-index: 1;
 }
-/* Tạo thêm một lớp viền trang trí chuyển động phía sau ảnh vuông */
+
 .avatar-frame::before {
   content: ''; position: absolute; top: 10px; left: 10px; width: 100%; height: 100%;
   border: 2px dashed var(--accent); border-radius: 24px; z-index: -1; transition: transform 0.4s ease;
 }
 
 .avatar-frame:hover::before { 
-  transform: translate(-20px, -20px); 
+  transform: translate(-18px, -18px); 
 }
-
 .avatar-img { 
   width: 100%; 
   height: 100%; 
