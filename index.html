@@ -44,14 +44,34 @@ canvas#wash {
   z-index: -1; pointer-events: none;
 }
 
+/* --- LOANG TRẮNG: các quầng trắng loang mềm, chuyển động chậm rãi --- */
+.white-bloom {
+  position: fixed; border-radius: 50%; z-index: -1; pointer-events: none;
+  background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.45) 42%, rgba(255,255,255,0) 72%);
+  filter: blur(30px);
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+  animation: bloomDrift 22s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+}
+.white-bloom.b1 { width: 480px; height: 480px; top: -8%; left: 4%; animation-duration: 24s; }
+.white-bloom.b2 { width: 380px; height: 380px; top: 55%; left: 70%; animation-duration: 19s; animation-delay: -6s; }
+.white-bloom.b3 { width: 300px; height: 300px; top: 30%; left: 40%; animation-duration: 27s; animation-delay: -12s; }
+.white-bloom.b4 { width: 420px; height: 420px; top: 75%; left: 10%; animation-duration: 21s; animation-delay: -3s; }
+@keyframes bloomDrift {
+  0%   { transform: translate3d(0,0,0) scale(1); opacity: 0.55; }
+  50%  { transform: translate3d(4%, -6%, 0) scale(1.15); opacity: 0.8; }
+  100% { transform: translate3d(-5%, 5%, 0) scale(0.92); opacity: 0.5; }
+}
+
 /* Floating Elements */
 .drift-emoji {
   position: absolute; font-size: 26px; opacity: 0.5; pointer-events: none;
-  animation: floatAround 7s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite alternate;
+  animation: floatAround 8.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
 }
 @keyframes floatAround {
   0% { transform: translateY(0) scale(1) rotate(0deg); }
-  100% { transform: translateY(-30px) scale(1.1) rotate(20deg); }
+  50% { transform: translateY(-16px) scale(1.05) rotate(10deg); }
+  100% { transform: translateY(-32px) scale(1.12) rotate(22deg); }
 }
 
 /* Header Trên cùng cố định mượt mà */
@@ -115,8 +135,9 @@ section { padding: 4.5rem 0; scroll-margin-top: 90px; }
   position: relative; 
   width: 280px; 
   height: 280px; 
-  animation: floatAvatarFast 2.8s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite alternate;
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: floatAvatarFast 4.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 .avatar-frame:hover { transform: scale(1.06) rotate(3deg); }
 
@@ -155,7 +176,8 @@ section { padding: 4.5rem 0; scroll-margin-top: 90px; }
   background: var(--panel); border: 1px solid var(--accent-border); border-radius: 22px; padding: 1.8rem;
   box-shadow: 0 6px 15px rgba(2,132,199,0.02); display: flex; flex-direction: column; justify-content: space-between;
   position: relative; overflow: hidden; 
-  transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.5s ease, border-color 0.5s ease;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.6s ease;
+  will-change: transform;
 }
 .ex-card:hover { 
   transform: translateY(-10px) scale(1.01); 
@@ -190,7 +212,8 @@ section { padding: 4.5rem 0; scroll-margin-top: 90px; }
 .learn-card {
   background: var(--panel); padding: 1.6rem; border-radius: 18px; border: 1px solid rgba(2,132,199,0.08);
   display: flex; gap: 1rem; align-items: flex-start; 
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.4s, box-shadow 0.4s;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.5s ease, box-shadow 0.5s ease;
+  will-change: transform;
 }
 .learn-card:hover { transform: scale(1.05) translateY(-4px); background-color: var(--accent-light); box-shadow: 0 10px 20px rgba(2,132,199,0.08); }
 .learn-ic { font-size: 1.6rem; }
@@ -218,9 +241,10 @@ footer .f-name { font-family: var(--font-title); font-weight: 700; color: var(--
 /* --- HIỆU ỨNG CUỘN HIỂN THỊ TRÔI CHẢY (FLOW REVEAL) --- */
 .reveal { 
   opacity: 0; 
-  transform: translateY(35px) scale(0.96); 
-  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), 
-              transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); 
+  transform: translateY(42px) scale(0.94); 
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 1.1s cubic-bezier(0.16, 1, 0.3, 1); 
+  will-change: transform, opacity;
 }
 .reveal.in { opacity: 1; transform: translateY(0) scale(1); }
 
@@ -240,6 +264,10 @@ footer .f-name { font-family: var(--font-title); font-weight: 700; color: var(--
 <body>
 
 <canvas id="wash"></canvas>
+<div class="white-bloom b1"></div>
+<div class="white-bloom b2"></div>
+<div class="white-bloom b3"></div>
+<div class="white-bloom b4"></div>
 <div class="fade-edge"></div>
 <span class="drift-emoji" style="top:15%; left:8%;">✨</span>
 <span class="drift-emoji" style="top:65%; left:6%; animation-delay:1.5s;">🐳</span>
@@ -265,7 +293,7 @@ footer .f-name { font-family: var(--font-title); font-weight: 700; color: var(--
       <div class="hero-inner">
         <div class="eyebrow">Portfolio môn học · Nhập môn Công nghệ số &amp; Ứng dụng AI</div>
         <h1 class="name">Nguyễn Minh <span class="accent">Anh</span></h1>
-        <p class="hero-sub">Sinh viên ngành <b>Tiếng Việt và văn hoá Việt Nam</b>, Trường Đại học Ngoại ngữ. Đây là nơi lưu lại hành trình học tập, các bài thực hành và những điều mình đã học được trong quá trình làm quen với công nghệ số và AI.</p>
+        <p class="hero-sub">Mình đang theo học ngành <b>Tiếng Việt và Văn hoá Việt Nam</b> tại Trường Đại học Ngoại ngữ. Trang portfolio này ghi lại chặng đường học tập, những bài thực hành và các bài học mình tích lũy được trên hành trình làm quen với công nghệ số cùng trí tuệ nhân tạo.</p>
         <div class="hero-meta">
           <div class="meta-item"><div class="k">Mã sinh viên</div><div class="v">25040302</div></div>
           <div class="meta-item"><div class="k">Ngành học</div><div class="v">Tiếng Việt &amp; VH Việt Nam</div></div>
@@ -296,7 +324,7 @@ footer .f-name { font-family: var(--font-title); font-weight: 700; color: var(--
       <h2 class="section-title">Một chút về mình</h2>
     </div>
     <p class="reveal" style="color:var(--muted); font-size:16px; line-height:1.9; max-width:850px;">
-      Xin chào, mình là <b style="color:var(--ink); font-weight:700;">Nguyễn Minh Anh</b>, hiện đang là sinh viên ngành Tiếng Việt và văn hoá Việt Nam tại Trường Đại học Ngoại ngữ.Là một người yêu mến những giá trị văn hóa và ngôn từ, những lúc rảnh rỗi, mình thường chọn cách nạp lại năng lượng bằng việc đọc sách để tìm tòi, mở rộng thế giới quan, bên cạnh sở thích xem những bộ phim hay và dành thời gian mua sắm thư giãn. Không gian Portfolio này không đơn thuần là một trang lưu trữ bài tập kỹ thuật, mà chính là chiếc "hộp ký ức số" ghi lại trọn vẹn từng bước chân thay đổi của mình. Tại đây, mình lưu giữ từ những sản phẩm thực hành đầu tiên còn đầy bỡ ngỡ cho đến những bài tập hoàn chỉnh, kết tinh từ những trải nghiệm vô giá trong suốt học phần Nhập môn Công nghệ số và Ứng dụng Trí tuệ nhân tạo. Nó là minh chứng cho thấy một sinh viên khối ngành khoa học xã hội và nhân văn đã học cách "bắt nhịp" và làm chủ công nghệ một cách tự tin, hiệu quả như thế nào.
+      Xin chào, mình là <b style="color:var(--ink); font-weight:700;">Nguyễn Minh Anh</b>, sinh viên ngành Tiếng Việt và Văn hoá Việt Nam tại Trường Đại học Ngoại ngữ. Vốn yêu thích ngôn từ và các giá trị văn hoá, mình thường dành thời gian rảnh để đọc sách nhằm mở rộng vốn hiểu biết, cùng với thú vui xem phim và mua sắm để thư giãn tinh thần. Portfolio này không chỉ là nơi tập hợp các bài tập kỹ thuật, mà giống như một "cuốn nhật ký số" ghi lại toàn bộ hành trình thay đổi của bản thân mình. Ở đây có đủ từ những sản phẩm đầu tay còn nhiều bỡ ngỡ cho tới các bài tập được hoàn thiện sau này, kết tinh từ những trải nghiệm quý giá trong học phần Nhập môn Công nghệ số và Ứng dụng Trí tuệ nhân tạo. Đó cũng là minh chứng cho việc một sinh viên khối ngành xã hội - nhân văn hoàn toàn có thể "bắt nhịp" và làm chủ công nghệ một cách tự tin, hiệu quả.
     </p>
   </section>
 
@@ -314,12 +342,12 @@ footer .f-name { font-family: var(--font-title); font-weight: 700; color: var(--
       <h2 class="section-title">Điều mình học được khi làm Portfolio</h2>
     </div>
     <div class="learn-grid">
-      <div class="learn-card reveal"><div class="learn-ic">🗂️</div><p>Tổ chức và trình bày thông tin một cách khoa học, mạch lạc hơn thay vì rời rạc.</p></div>
-      <div class="learn-card reveal"><div class="learn-ic">🔍</div><p>Tư duy phản biện khi tìm kiếm, chọn lọc và đánh giá độ tin cậy của nguồn thông tin.</p></div>
-      <div class="learn-card reveal"><div class="learn-ic">🤖</div><p>Biết cách đặt câu hỏi và làm việc hiệu quả cùng các công cụ AI trong học tập.</p></div>
-      <div class="learn-card reveal"><div class="learn-ic">🤝</div><p>Kỹ năng phối hợp nhóm và quản lý tiến độ công việc trên nền tảng trực tuyến.</p></div>
-      <div class="learn-card reveal"><div class="learn-ic">🎨</div><p>Cân bằng giữa sự hỗ trợ của AI và dấu ấn sáng tạo của riêng mình.</p></div>
-      <div class="learn-card reveal"><div class="learn-ic">📝</div><p>Kiên trì chỉnh sửa, hoàn thiện từng phần để có một sản phẩm trình bày chuyên nghiệp.</p></div>
+      <div class="learn-card reveal"><div class="learn-ic">🗂️</div><p>Biết cách sắp xếp và trình bày thông tin mạch lạc, khoa học hơn, thay vì để mọi thứ rời rạc như trước.</p></div>
+      <div class="learn-card reveal"><div class="learn-ic">🔍</div><p>Rèn tư duy phản biện trong việc tìm kiếm, chọn lọc và thẩm định độ tin cậy của các nguồn thông tin.</p></div>
+      <div class="learn-card reveal"><div class="learn-ic">🤖</div><p>Học được cách đặt câu hỏi hợp lý và phối hợp hiệu quả với các công cụ AI phục vụ việc học.</p></div>
+      <div class="learn-card reveal"><div class="learn-ic">🤝</div><p>Trau dồi kỹ năng làm việc nhóm và quản lý tiến độ công việc thông qua các nền tảng trực tuyến.</p></div>
+      <div class="learn-card reveal"><div class="learn-ic">🎨</div><p>Tìm được điểm cân bằng giữa việc tận dụng AI hỗ trợ và giữ gìn dấu ấn sáng tạo cá nhân.</p></div>
+      <div class="learn-card reveal"><div class="learn-ic">📝</div><p>Rèn sự kiên trì trong việc chỉnh sửa, hoàn thiện từng phần để cho ra một sản phẩm trình bày chuyên nghiệp.</p></div>
     </div>
   </section>
 
@@ -328,17 +356,17 @@ footer .f-name { font-family: var(--font-title); font-weight: 700; color: var(--
       <div class="tag">Tổng kết</div>
       <h2 class="section-title">Nhìn lại chặng đường</h2>
     </div>
-    <p class="summary-quote reveal">Mỗi bài tập nhỏ đều là một bước tiến, giúp mình <em>tự tin hơn</em> trên hành trình làm quen với công nghệ số và AI.</p>
+    <p class="summary-quote reveal">Từng bài tập nhỏ đều là một bước tiến thực sự, tiếp thêm cho mình <em>sự tự tin</em> trên hành trình khám phá công nghệ số và AI.</p>
     <div class="reflect-grid">
       <div class="reflect-col reveal">
         <h3>📚 Bài học nhận được</h3>
-        <p>Hoàn thành portfolio này là một trải nghiệm đáng nhớ đối với mình. Qua từng bài tập, mình học được cách tổ chức thông tin khoa học hơn, biết đánh giá độ tin cậy của nguồn tin và đặt câu hỏi rõ ràng khi làm việc cùng AI.</p>
-        <p>Đây cũng là dịp để mình rèn luyện sự kiên trì, cẩn thận và khả năng trình bày nội dung một cách mạch lạc, chuyên nghiệp hơn.</p>
+        <p>Hoàn thiện portfolio này thực sự là một trải nghiệm khó quên với mình. Qua từng bài tập, mình dần biết cách tổ chức thông tin gọn gàng hơn, thẩm định độ tin cậy của nguồn tin, cũng như đặt câu hỏi mạch lạc khi làm việc cùng AI.</p>
+        <p>Đây cũng chính là cơ hội để mình rèn giũa sự kiên trì, tính cẩn thận và khả năng trình bày nội dung sao cho mạch lạc, chuyên nghiệp hơn.</p>
       </div>
       <div class="reflect-col reveal">
         <h3>🌱 Quá trình trưởng thành</h3>
-        <p>Nhìn lại từng bài tập đã thực hiện, mình nhận ra bản thân đã tiến bộ rất nhiều — từ những thao tác cơ bản cho đến việc biết ứng dụng AI một cách có trách nhiệm vào học tập và nghiên cứu.</p>
-        <p>Mình hy vọng portfolio này sẽ là một dấu mốc đáng yêu, ghi lại sự cố gắng trong học kỳ này, đồng thời là động lực để mình tiếp tục học hỏi và phát triển nhiều hơn nữa.</p>
+        <p>Khi nhìn lại toàn bộ các bài tập đã làm, mình nhận thấy bản thân đã trưởng thành lên rất nhiều — từ những thao tác căn bản ban đầu cho tới việc biết vận dụng AI một cách có trách nhiệm vào học tập và nghiên cứu.</p>
+        <p>Mình mong rằng portfolio này sẽ trở thành một dấu mốc đáng nhớ, lưu lại nỗ lực của cả học kỳ, và là nguồn động lực để mình tiếp tục học hỏi, hoàn thiện bản thân nhiều hơn nữa.</p>
       </div>
     </div>
     <div class="stat-row">
@@ -375,20 +403,23 @@ navLinks.forEach(link => {
   });
 });
 
-// Hiệu ứng Flow Reveal xuất hiện cực êm khi cuộn trang
+// Hiệu ứng Flow Reveal xuất hiện cực êm khi cuộn trang, có độ trễ so le
 const io = new IntersectionObserver((entries) => {
   entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
 },{threshold:0.08});
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = ((i % 6) * 0.07) + 's';
+  io.observe(el);
+});
 
 // Mảng dữ liệu 6 bài tập
 const exercises = [
-  {t:"Thao tác cơ bản với tệp tin và thư mục", goal:"Xây dựng thói quen tổ chức dữ liệu cá nhân khoa học, dễ tìm kiếm và sao lưu an toàn.", result:"Thiết lập hệ thống thư mục rõ ràng theo môn học/dự án, đặt tên tệp nhất quán và sao lưu định kỳ.", link:"#"},
-  {t:"Tìm kiếm và đánh giá thông tin học thuật", goal:"Biết khai thác các nguồn học thuật uy tín và đánh giá độ tin cậy của thông tin trước khi sử dụng.", result:"Thành thạo tra cứu trên cơ sở dữ liệu học thuật và áp dụng tiêu chí đánh giá nguồn vào bài tập thực tế.", link:"#"},
-  {t:"Viết Prompt hiệu quả cho các tác vụ học tập", goal:"Rèn luyện kỹ năng đặt câu hỏi rõ ràng, có ngữ cảnh để khai thác AI phục vụ học tập.", result:"Xây dựng được bộ prompt mẫu cho nhiều tình huống học tập, cải thiện rõ rệt chất lượng phản hồi từ AI.", link:"#"},
-  {t:"Sử dụng công cụ hợp tác trực tuyến cho dự án nhóm", goal:"Phối hợp hiệu quả với nhóm qua các nền tảng trực tuyến, quản lý tiến độ minh bạch.", result:"Áp dụng thành công công cụ cộng tác để phân chia công việc, theo dõi deadline và lưu trữ tài liệu nhóm.", link:"#"},
-  {t:"Sử dụng AI tạo sinh để hỗ trợ sáng tạo nội dung", goal:"Kết hợp AI tạo sinh vào quy trình sáng tạo mà vẫn giữ được dấu ấn cá nhân.", result:"Tạo ra sản phẩm nội dung hoàn chỉnh có hỗ trợ của AI, đồng thời tinh chỉnh phù hợp phong cách riêng.", link:"#"},
-  {t:"Sử dụng AI có trách nhiệm trong học tập và nghiên cứu", goal:"Nhận diện giới hạn của AI và sử dụng công cụ này một cách liêm chính trong học thuật.", result:"Hình thành thói quen kiểm chứng thông tin do AI cung cấp và trích dẫn nguồn hỗ trợ một cách minh bạch.", link:"#"},
+  {t:"Thao tác cơ bản với tệp tin và thư mục", goal:"Hình thành thói quen sắp xếp dữ liệu cá nhân một cách khoa học, giúp việc tìm kiếm và sao lưu trở nên an toàn, thuận tiện hơn.", result:"Xây dựng được hệ thống thư mục mạch lạc theo từng môn học và dự án, đặt tên tệp thống nhất và duy trì sao lưu đều đặn.", link:"#"},
+  {t:"Tìm kiếm và đánh giá thông tin học thuật", goal:"Học cách khai thác các nguồn tài liệu học thuật đáng tin cậy và biết kiểm chứng độ chính xác trước khi sử dụng.", result:"Sử dụng thành thạo các cơ sở dữ liệu học thuật, đồng thời vận dụng tiêu chí đánh giá nguồn vào các bài tập cụ thể.", link:"#"},
+  {t:"Viết Prompt hiệu quả cho các tác vụ học tập", goal:"Rèn kỹ năng diễn đạt yêu cầu rõ ràng, đủ ngữ cảnh để khai thác AI hiệu quả cho việc học.", result:"Tạo được bộ khung prompt áp dụng cho nhiều tình huống khác nhau, giúp câu trả lời từ AI trở nên chính xác và hữu ích hơn hẳn.", link:"#"},
+  {t:"Sử dụng công cụ hợp tác trực tuyến cho dự án nhóm", goal:"Phối hợp nhịp nhàng cùng các thành viên qua nền tảng trực tuyến, đảm bảo tiến độ công việc luôn minh bạch, rõ ràng.", result:"Ứng dụng hiệu quả công cụ cộng tác để phân công nhiệm vụ, theo dõi hạn nộp và lưu trữ tài liệu chung của nhóm.", link:"#"},
+  {t:"Sử dụng AI tạo sinh để hỗ trợ sáng tạo nội dung", goal:"Đưa AI tạo sinh vào quy trình sáng tạo nội dung nhưng vẫn giữ được cá tính và dấu ấn riêng của bản thân.", result:"Hoàn thiện sản phẩm nội dung với sự hỗ trợ của AI, sau đó chỉnh sửa lại để phù hợp với phong cách cá nhân.", link:"#"},
+  {t:"Sử dụng AI có trách nhiệm trong học tập và nghiên cứu", goal:"Hiểu rõ những giới hạn của AI và sử dụng công cụ này một cách trung thực, đúng chuẩn mực học thuật.", result:"Tạo thói quen kiểm tra lại thông tin AI cung cấp, đồng thời trích dẫn rõ ràng, minh bạch nguồn hỗ trợ đã sử dụng.", link:"#"},
 ];
 
 const grid = document.getElementById('exGrid');
@@ -417,6 +448,7 @@ exercises.forEach((ex, i) => {
       Xem trên Google Drive
     </a>`;
   grid.appendChild(card);
+  card.style.transitionDelay = ((i % 6) * 0.08) + 's';
   io.observe(card);
 });
 
@@ -431,25 +463,30 @@ function resize(){
 resize(); window.addEventListener('resize', resize);
 
 let mouse = {x: window.innerWidth / 2, y: window.innerHeight / 2};
+let smoothMouse = {x: mouse.x, y: mouse.y};
 window.addEventListener('mousemove', e => { 
   mouse.x = e.clientX; 
   mouse.y = e.clientY; 
 }, {passive: true});
 
-const washColors = ['186,230,253', '224,242,254', '191,219,254', '219,234,254'];
+// Thêm sắc trắng loang xen giữa các mảng màu xanh pastel để nền mềm mại hơn
+const washColors = ['255,255,255', '186,230,253', '255,255,255', '224,242,254', '191,219,254', '255,255,255', '219,234,254'];
 // Tối ưu hóa kích thước blobs lớn hơn giúp màu loang đều và mượt
-const blobs = Array.from({length: 5}, (_,i) => ({
+const blobs = Array.from({length: 7}, (_,i) => ({
   ox: Math.random() * window.innerWidth, 
   oy: Math.random() * window.innerHeight,
-  rad: Math.random() * 200 + 350, 
+  rad: Math.random() * 220 + 320, 
   ang: Math.random() * Math.PI * 2,
-  speed: Math.random() * 0.0015 + 0.0008, // Tăng tốc độ dịch chuyển của nền nhẹ
-  orbit: Math.random() * 100 + 50,
+  speed: Math.random() * 0.0009 + 0.0004, // chuyển động chậm rãi, êm dịu hơn
+  orbit: Math.random() * 110 + 60,
   color: washColors[i % washColors.length]
 }));
 
 function tick(){
   ctx.clearRect(0,0,W,H);
+  // Nội suy mượt (lerp) vị trí chuột để tránh giật khi di chuyển nhanh
+  smoothMouse.x += (mouse.x - smoothMouse.x) * 0.06;
+  smoothMouse.y += (mouse.y - smoothMouse.y) * 0.06;
   blobs.forEach(b => {
     b.ang += b.speed;
     // Chuyển động lượn sóng tự nhiên lý tưởng
@@ -457,12 +494,12 @@ function tick(){
     const by = b.oy + Math.sin(b.ang * 0.8) * b.orbit;
     
     // Tương tác chuột mượt theo dải
-    const mx = bx + (mouse.x - bx) * 0.03;
-    const my = by + (mouse.y - by) * 0.03;
+    const mx = bx + (smoothMouse.x - bx) * 0.025;
+    const my = by + (smoothMouse.y - by) * 0.025;
     
     const grad = ctx.createRadialGradient(mx, my, 0, mx, my, b.rad);
-    grad.addColorStop(0, `rgba(${b.color}, 0.35)`);
-    grad.addColorStop(0.6, `rgba(${b.color}, 0.12)`);
+    grad.addColorStop(0, `rgba(${b.color}, 0.3)`);
+    grad.addColorStop(0.6, `rgba(${b.color}, 0.1)`);
     grad.addColorStop(1, `rgba(${b.color}, 0)`);
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, W, H);
